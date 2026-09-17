@@ -25,11 +25,14 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        # v5 runs on the Node.js 24 action runtime required by current runners.
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
       - name: Run Claude Code
-        uses: anthropics/claude-code-action@beta
+        # v1 also updates the action's transitive setup-bun dependency away
+        # from the deprecated Node.js 20 runtime used by the beta release.
+        uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}

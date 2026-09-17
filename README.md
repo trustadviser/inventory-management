@@ -57,6 +57,23 @@ All endpoints support optional filtering via query params: `warehouse`, `categor
 - `GET /api/dashboard/summary` - Summary statistics
 - `GET /api/spending/*` - Spending data
 
+## Telemetry and health checks
+
+Every API response includes an `X-Request-ID` header. Supplying that header on a
+request preserves the value, allowing callers to correlate failures with the
+structured API access log. Logs default to JSON and can be configured with
+`LOG_LEVEL` and `LOG_FORMAT` (`json` or `text`).
+
+- `GET /health/live` - Process liveness
+- `GET /health/ready` - Dataset readiness (returns HTTP 503 when unavailable)
+- `GET /metrics` - Prometheus request counts and latency histograms
+
+The metrics use FastAPI route templates (for example `/api/orders/{order_id}`)
+rather than raw URLs, preventing IDs from creating unbounded label cardinality.
+
+For a repeatable smoke test and step-by-step manual verification, see
+[Testing telemetry and observability](docs/testing-observability.md).
+
 ## Demo Data
 
 Mock data includes:

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders
+from observability import install_observability
 
 app = FastAPI(title="Factory Inventory Management System")
 
@@ -54,6 +55,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+def data_is_ready() -> bool:
+    """Report whether the application's required in-memory datasets loaded."""
+    return isinstance(inventory_items, list) and isinstance(orders, list)
+
+
+install_observability(app, data_is_ready)
 
 # Data models
 class InventoryItem(BaseModel):

@@ -25,6 +25,9 @@
           <router-link to="/reports" :class="{ active: $route.path === '/reports' }">
             Reports
           </router-link>
+          <router-link to="/observability" :class="{ active: $route.path === '/observability' }">
+            System Map
+          </router-link>
         </nav>
         <LanguageSwitcher />
         <ProfileMenu
@@ -33,7 +36,7 @@
         />
       </div>
     </header>
-    <FilterBar />
+    <FilterBar v-if="!$route.meta.hideFilters" />
     <main class="main-content">
       <router-view />
     </main>

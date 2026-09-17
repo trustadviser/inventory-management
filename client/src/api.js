@@ -1,8 +1,19 @@
 import axios from 'axios'
 
 const API_BASE_URL = 'http://localhost:8001/api'
+const SERVICE_BASE_URL = 'http://localhost:8001'
 
 export const api = {
+  async getServiceHealth() {
+    const response = await axios.get(`${SERVICE_BASE_URL}/health/ready`)
+    return response.data
+  },
+
+  async getServiceMetrics() {
+    const response = await axios.get(`${SERVICE_BASE_URL}/metrics`)
+    return response.data
+  },
+
   async getInventory(filters = {}) {
     const params = new URLSearchParams()
     if (filters.warehouse && filters.warehouse !== 'all') params.append('warehouse', filters.warehouse)
